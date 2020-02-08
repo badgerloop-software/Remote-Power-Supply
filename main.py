@@ -14,6 +14,10 @@ def connect():
   z60.connect()
 
 ## Commands Go Here
+print("Sendinging Address Commands")
+z60.write("INST:NSEL 4\r")
+print("Sent Address Command... Quereying")
+z60.query("INST:NSEL?\r")
 print("Starting Command Shell... Connecting to Power Supply")
 z60.connect()
 if (z60.is_connected):
