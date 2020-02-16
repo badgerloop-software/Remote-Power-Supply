@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import power
 import argparse
 import sys
@@ -30,8 +32,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=HELP_MSG)
     parser.add_argument('-v', '--volt', nargs=1, default=0, type=int, choices=VALID_VOLTAGES)
     parser.add_argument('-p', '--power', nargs=1, default='off', choices=['off', 'on'])
-    parser.add_argument('-i', '--info', action='store_true')
+    parser.add_argument('-i', '--info', help='Reads the voltage and current from the supply', 
+        action='store_true')
     args = parser.parse_args()
-
     main(args.power, args.volt, args.info)
 
