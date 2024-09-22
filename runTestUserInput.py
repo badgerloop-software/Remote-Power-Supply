@@ -48,49 +48,74 @@ def runTest():
     # fig.canvas.draw()
 
     while True:
-        if(supply.getCurrent()>y[a]):
-            a += 1
-            clarification = "\nvoltage: {} volts\ncurrent limit: {} amps".format(x[a],y[a])
-            print(clarification)
-            supply.setVoltage(x[a])
-            supply.setCurrent(y[a])
-            if a >= len(y):
-                a = len(y)
+        current_input = input()
+        current_input = float(current_input)
+        if(current_input>y[a]):
+            for w in range(len(y)):
+                a += 1
+                supply.setVoltage(x[a])
+                supply.setCurrent(y[a])
+                clarification = "\nvoltage: {} volts\ncurrent limit: {} amps".format(x[a],y[a])
+                print(clarification)
+                
+                # IV Plot Update
+                ax1.cla()
+                ax1.plot(x, z)
+                ax1.set(xlabel='voltage',ylabel='current')
+                ax1.set_title('IV')
+                ax1.hlines(y=y,xmin=0,xmax=30,linewidth=1,color='r',alpha=0.2 )
+                ax1.scatter(x[a], z[a], color="red")
+                ivPoint = "{}V\n~{}I".format(x[a],round(z[a],2))
+                ax1.annotate(ivPoint, (x[a],z[a]))
 
-        elif(supply.getCurrent()<y[a-1]):
-            a -= 1
-            clarification = "\nvoltage: {} volts\ncurrent limit: {} amps".format(x[a],y[a])
-            print(clarification)
-            supply.setVoltage(x[a])
-            supply.setCurrent(y[a])
-            if a < 1:
-                a = 1
-        
-        
-        
-        # IV Plot Update
-        ax1.cla()
-        ax1.plot(x, z)
-        ax1.set(xlabel='voltage',ylabel='current')
-        ax1.set_title('IV')
-        ax1.hlines(y=y,xmin=0,xmax=30,linewidth=1,color='r',alpha=0.2 )
-        ax1.scatter(x[a], z[a], color="red")
-        ivPoint = "{}V\n~{}I".format(x[a],round(z[a],2))
-        ax1.annotate(ivPoint, (x[a],z[a]))
+                # Power Plot Update
+                ax2.cla()
+                ax2.plot(x, x*z)
+                ax2.set(xlabel='voltage',ylabel='power')
+                ax2.set_title('Power')
+                ax2.scatter(x[a], x[a]*z[a], color="red")
+                powerPoint = "~{}W".format(round(x[a]*z[a],2))
+                ax2.annotate(powerPoint, (x[a],x[a]*z[a]))
+                plt.pause(0.01)
+                fig.canvas.draw()
+                time.sleep(1)
 
-        # Power Plot Update
-        ax2.cla()
-        ax2.plot(x, x*z)
-        ax2.set(xlabel='voltage',ylabel='power')
-        ax2.set_title('Power')
-        ax2.scatter(x[a], x[a]*z[a], color="red")
-        powerPoint = "~{}W".format(round(x[a]*z[a],2))
-        ax2.annotate(powerPoint, (x[a],x[a]*z[a]))
-        plt.pause(0.01)
-        fig.canvas.draw()
-        time.sleep(0.1)
-    
-        
+                if(current_input<=y[a]):
+                    break
+
+        elif(current_input<y[a-1]):
+            for w in range(len(y)):
+                a -= 1
+                supply.setVoltage(x[a])
+                supply.setCurrent(y[a])
+                clarification = "\nvoltage: {} volts\ncurrent limit: {} amps".format(x[a],y[a])
+                print(clarification)
+
+                # IV Plot Update
+                ax1.cla()
+                ax1.plot(x, z)
+                ax1.set(xlabel='voltage',ylabel='current')
+                ax1.set_title('IV')
+                ax1.hlines(y=y,xmin=0,xmax=30,linewidth=1,color='r',alpha=0.2 )
+                ax1.scatter(x[a], z[a], color="red")
+                ivPoint = "{}V\n~{}I".format(x[a],round(z[a],2))
+                ax1.annotate(ivPoint, (x[a],z[a]))
+
+                # Power Plot Update
+                ax2.cla()
+                ax2.plot(x, x*z)
+                ax2.set(xlabel='voltage',ylabel='power')
+                ax2.set_title('Power')
+                ax2.scatter(x[a], x[a]*z[a], color="red")
+                powerPoint = "~{}W".format(round(x[a]*z[a],2))
+                ax2.annotate(powerPoint, (x[a],x[a]*z[a]))
+                plt.pause(0.01)
+                fig.canvas.draw()
+                time.sleep(1)
+
+                if(current_input>=y[a-1]):
+                        break
+
 
     supply.turnOn()
 
