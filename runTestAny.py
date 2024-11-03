@@ -9,9 +9,6 @@ WRITE_TERMINATION = '\r'
 MAX_VOLTS = 30
 MAX_AMPS = 3.5
 
-fig = plt.figure()
-ax1 = fig.add_subplot(1,1,1)
-
 def runTest():
     try:
         supply = power.PowerSupply()

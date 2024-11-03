@@ -12,9 +12,6 @@ WRITE_TERMINATION = '\r'
 MAX_VOLTS = 30
 MAX_AMPS = 3.5
 
-fig = plt.figure()
-ax1 = fig.add_subplot(1,1,1)
-
 def runTest():
     try:
         supply = power.PowerSupply()
@@ -35,7 +32,7 @@ def runTest():
 
         while True:
             current_input = input()
-            if current_input == "0" or current_input > MAX_AMPS:
+            if float(current_input) < 0 or float(current_input) > MAX_AMPS:
                 print("Invalid current input")
                 continue
             current_input = float(current_input)
