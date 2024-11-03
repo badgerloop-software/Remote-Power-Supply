@@ -1,19 +1,15 @@
 #!/usr/bin/python
-
-import sys
 import pyvisa
-import time
 
 class PowerSupply:
     _TERM = '\r'
     _err  = False
-
+    _z60 = 0
     def __init__(self):
         resMan = pyvisa.ResourceManager()
         resList = resMan.list_resources()
-        
         try:
-            self._z60 = resMan.open_resource(resList[0])
+            self._z60 = resMan.open_resource(resList[0]) #Change the index based on the Com Port you are using
         except IndexError:
             print("Unable to find a power supply, shutting down")
             self._err = True
@@ -34,13 +30,23 @@ class PowerSupply:
         self._z60.write("OUTP OFF")
 
     def setVoltage(self, voltage):
-        if (voltage <= 24):
-            self._z60.write("VOLT " + str(voltage))
+        #if (voltage <= 24):
+        self._z60.write("VOLT " + str(voltage))
+ 
+    def setCurrent(self, current):
+        self._z60.write("CURR:LEV " + str(current))
         
     def getVoltage(self):
         return self._z60.query("MEAS:VOLT:DC?")
 
     def getCurrent(self):
-        return self._z60.query("MEAS:CURR:DC?")
-   
-   
+        q = self._z60.query("MEAS:CURR:DC?")
+
+        try:
+            return float(q)
+        except ValueError:
+            print("Value Error")
+            self._err = True
+            return
+
+
