@@ -11,7 +11,7 @@ print("Finding Resources")
 rm = pyvisa.ResourceManager()
 print(rm.list_resources())
 rs = rm.list_resources()
-z60 = rm.open_resource(rs[4])
+z60 = rm.open_resource(rs[4]) #Change the index based on the Com Port you are using
 z60.read_termination = READ_TERMINATION
 
 z60.write_termination = WRITE_TERMINATION
