@@ -9,7 +9,7 @@ class PowerSupply:
         resMan = pyvisa.ResourceManager()
         resList = resMan.list_resources()
         try:
-            self._z60 = resMan.open_resource(resList[4]) #Change the index based on the Com Port you are using
+            self._z60 = resMan.open_resource(resList[0]) #Change the index based on the Com Port you are using
         except IndexError:
             print("Unable to find a power supply, shutting down")
             self._err = True

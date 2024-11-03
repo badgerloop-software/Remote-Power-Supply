@@ -29,11 +29,10 @@ def runTest():
         ax2 = fig.add_subplot(122)
 
         while True:
-            current_input = input()
-            if float(current_input) < 0 or float(current_input) > MAX_AMPS:
+            current_input = float(input())
+            if current_input < 0 or current_input > MAX_AMPS:
                 print("Invalid current input")
                 continue
-            current_input = float(current_input)
             if(current_input>y[a]):
                 for w in range(len(y)):
                     a += 1
