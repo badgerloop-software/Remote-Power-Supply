@@ -1,8 +1,5 @@
 #!/usr/bin/python
-
-import sys
 import pyvisa
-import time
 
 class PowerSupply:
     _TERM = '\r'
@@ -10,9 +7,7 @@ class PowerSupply:
     _z60 = 0
     def __init__(self):
         resMan = pyvisa.ResourceManager()
-        
         resList = resMan.list_resources()
-        #import pdb; pdb.set_trace()
         try:
             self._z60 = resMan.open_resource(resList[0])
         except IndexError:
